@@ -9,12 +9,16 @@
 import Foundation
 
 extension Struct {
-  func addingInternalProperties(forBundleIdentifier bundleIdentifier: String, hostingBundle: String? = nil) -> Struct {
+  func addingInternalProperties(forBundleIdentifier bundleIdentifier: String, isSwiftPackage: Bool, hostingBundle: String? = nil) -> Struct {
     let hostingBundleValue: String
-    if let bundleName = hostingBundle, !bundleName.isEmpty {
-      hostingBundleValue = "Bundle(for: R.Class.self).path(forResource: \"\(bundleName)\", ofType: \"bundle\").flatMap(Bundle.init(path:)) ?? Bundle(for: R.Class.self)"
+    if isSwiftPackage {
+      hostingBundleValue = "Bundle.module"
     } else {
-      hostingBundleValue = "Bundle(for: R.Class.self)"
+      if let bundleName = hostingBundle, !bundleName.isEmpty {
+        hostingBundleValue = "Bundle(for: R.Class.self).path(forResource: \"\(bundleName)\", ofType: \"bundle\").flatMap(Bundle.init(path:)) ?? Bundle(for: R.Class.self)"
+      } else {
+        hostingBundleValue = "Bundle(for: R.Class.self)"
+      }
     }
 
     let internalProperties = [
