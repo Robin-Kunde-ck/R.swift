@@ -212,6 +212,7 @@ struct StringsStructGenerator: ExternalOnlyStructGenerator {
     let locales = values.values
       .map { $0.0 }
       .compactMap { $0.localeDescription }
+      .sorted()
       .map { "\"\($0)\"" }
       .joined(separator: ", ")
 
@@ -363,7 +364,7 @@ private struct StringValues {
     var results: [String] = []
 
     let anyNone = values.contains { $0.0.isNone }
-    let vs = primaryLanguageValues + values
+    let vs = primaryLanguageValues + values.sorted(by: { $0.0 < $1.0 })
 
     if let (locale, value) = vs.first {
       if let localeDescription = locale.localeDescription {
@@ -381,7 +382,7 @@ private struct StringValues {
         results.append("")
       }
 
-      let locales = values.compactMap { $0.0.localeDescription }
+      let locales = values.compactMap { $0.0.localeDescription }.sorted()
       results.append("Locales: \(locales.joined(separator: ", "))")
     }
 

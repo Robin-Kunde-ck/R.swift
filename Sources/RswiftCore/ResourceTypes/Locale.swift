@@ -68,3 +68,7 @@ extension Locale: Hashable {
     }
   }
 }
+
+extension Locale: Comparable {
+
+}

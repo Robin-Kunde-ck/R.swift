@@ -54,8 +54,9 @@ struct Struct: UsedTypesProvider, SwiftCodeConverible {
       .joined(separator: "\n")
 
     let varsString = properties
+      .sorted(by: { $0.name.description < $1.name.description })
       .map { $0.swiftCode }
-      .sorted()
+//      .sorted()
       .map { $0.description }
       .joined(separator: "\n")
 
